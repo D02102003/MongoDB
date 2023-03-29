@@ -1,31 +1,37 @@
 <h2>{{successfully}}</h2>
 <div class="form-group text-center">
-    <form action="/sinhVien/add" method="POST">
+        
+
+    <form action="/sinhVien/add" method="POST" >
+    <input  type="hidden" name="id" value="{{sinhVien._id}}">
         <div class="form-group">
             <div><label for="">Tên sinh viên</label></div>
-            <input style="width: 400px;height: 40px;" type="text" name="ten">
+            <input style="width: 400px;height: 40px;" value="{{sinhVien.ten}}" type="text" name="ten">
         </div>
         <div class="form-group">
             <div>
                 <label for="">Tuổi</label>
 
             </div>
-            <input style="width: 400px;height: 40px;" type="text" name="tuoi">
+            <input style="width: 400px;height: 40px;" value="{{sinhVien.tuoi}}" type="number" name="tuoi">
         </div>
         <div class="form-group">
             <div>
                 <label for="">Email</label>
 
             </div>
-            <input style="width: 400px;height: 40px;" type="text" name="email">
+            <input style="width: 400px;height: 40px;" value="{{sinhVien.email}}" type="text" name="email">
         </div>
 
         <div class="form-group">
-            <button  type="submit" style="background-color: yellow;color: black;" class="btn btn-primary">Thêm</button>
+            <button  type="submit"  style="background-color: yellow;color: black;" class="btn btn-primary">Submit</button>
+        </div>
+         <div class="form-group">
+            <a href="/sinhVien/list" class="btn btn-primary btn-sm">List</a>
         </div>
 
-
     </form>
+    
 </div>
 
 <!-- Optional JavaScript -->
