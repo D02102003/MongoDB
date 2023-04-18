@@ -12,6 +12,10 @@ const SinhVien = new mongose.Schema({
     email:{
         type: String,
         required : true
+    },
+    avata:{
+        type: String,
+        required : true
     }
 });
 

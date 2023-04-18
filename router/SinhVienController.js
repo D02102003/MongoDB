@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const modelSV  = require('../svModel')
+const modelSV = require('../svModel');
+let alert = require('alert');
 const app = express();
 const exphbs = require('express-handlebars');
 app.engine('.hbs', exphbs.engine({
     extname: "hbs",
-    defaultLayout:'main',
+    defaultLayout: 'main',
     layoutsDir: "views/layouts/"
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,37 +14,52 @@ app.use(bodyParser.json())
 app.set('view engine', '.hbs');
 app.set('views', './views');
 app.get('/', (req, res) => {
-    res.render('AddSv.hbs', { layout: 'main' });
-    console.log('http://127.0.0.1:5500/traitim.png');
+    
+    res.render('AddSv.hbs',{layout: 'main'});
 });
-app.post('/add',async (req,res)=>{
+app.post('/add', async (req, res) => {
     console.log(req.body);
-    if(req.body.id == ''){
-        await modelSV.create({
-            ten : req.body.ten,
-            tuoi : req.body.tuoi,
-            email : req.body.email,
-        })
-        res.render('AddSv.hbs',{layout:'main',helpers: {
-            successfully() { return 'ADD SUCSSECCFULLY'; },
-           
-          }})
+    var tenVL = String(req.body.ten);
+    var giaVL = String(req.body.tuoi);
+    var soluongVL = String(req.body.email);
+    var regexNull = /^$/;
+    if (tenVL.match(regexNull) || giaVL.match(regexNull) || soluongVL.match(regexNull)) {
+        alert('Không được trống');
+    }else if(req.body.tuoi <= 0){
+        alert('Năm không được nhỏ hơn 0');
     }
-    else{
-        
-        await modelSV.findOneAndUpdate({_id:req.body.id},req.body,{new :true},(err,doc) =>{
-            if(!err){
+        else{
+        if (req.body.id == '') {
+            await modelSV.create({
+                ten: req.body.ten,
+                tuoi: req.body.tuoi,
+                email: req.body.email,
+                avata: req.body.avata,
+            })
+            await modelSV.find({}).sort({tuoi: -1}).then(sinhVien => {
+                res.redirect('/sinhVien/list')
+            })
+            
+        }
+        else {
+    
+            await modelSV.findOneAndUpdate({ _id: req.body.id }, req.body, { new: true }, (err, doc) => {
+                if (!err) {
                     res.redirect('/sinhVien/list')
-                
-            }
-            else{
-                console.log('Loi');
-            }
-        })
-    }
-        
+    
+                }
+                else {
+                    console.log('Loi');
+                }
+            })
+        }
     }
     
+}
+
+
+
+
 )
 app.get('/edit/:id', (req, res) => {
     modelSV.findById(req.params.id, (err, sinhVien) => {
@@ -68,9 +84,15 @@ app.get('/delete/:id', async (req, res) => {
         res.status(500).send(error);
     }
 })
-app.get('/list',async (req,res) =>{
-    await modelSV.find({}).then(sinhVien =>{
-        res.render('DanhSachSv.hbs',{sinhVien : sinhVien.map(sinhViens => sinhViens.toJSON())})
+// app.get('/list', async (req, res) => {
+//     await modelSV.find({}).then(sinhVien => {
+//         res.render('DanhSachSv.hbs', { sinhVien: sinhVien.map(sinhViens => sinhViens.toJSON()) })
+//     })
+// })
+
+app.get('/list', async (req, res) => {
+    await modelSV.find({}).sort({tuoi: 1}).then(sinhVien => {
+        res.render('DanhSachSv.hbs', { sinhVien: sinhVien.map(sinhViens => sinhViens.toJSON()) })
     })
 })
 

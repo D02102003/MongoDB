@@ -5,19 +5,26 @@
     <form action="/sinhVien/add" method="POST" >
     <input  type="hidden" name="id" value="{{sinhVien._id}}">
         <div class="form-group">
-            <div><label for="">Tên sinh viên</label></div>
+            <div><label for="">Tên</label></div>
             <input style="width: 400px;height: 40px;" value="{{sinhVien.ten}}" type="text" name="ten">
         </div>
         <div class="form-group">
             <div>
-                <label for="">Tuổi</label>
+                <label for="">Năm </label>
 
             </div>
             <input style="width: 400px;height: 40px;" value="{{sinhVien.tuoi}}" type="number" name="tuoi">
         </div>
         <div class="form-group">
             <div>
-                <label for="">Email</label>
+                <label for="">Link Ảnh </label>
+
+            </div>
+            <input style="width: 400px;height: 40px;" value="{{sinhVien.avata}}" type="text" name="avata">
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="">Loại</label>
 
             </div>
             <input style="width: 400px;height: 40px;" value="{{sinhVien.email}}" type="text" name="email">
